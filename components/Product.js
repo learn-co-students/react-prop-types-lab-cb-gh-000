@@ -8,7 +8,6 @@ class Product extends React.Component {
         <p>{this.props.producer}</p>
         <p>{this.props.hasWatermark}</p>
         <p>{this.props.color}</p>
-        <p>{this.props.weight}</p>
       </div>
     )
   }
@@ -24,50 +23,32 @@ Product.defaultProps = {
 
 function validWeight(props, propName) {  
   
-    let value = props[propName];        
+    const value = props[propName];        
     // check for error
-    let isCorrectWeight = weight > 80 && weight < 300;
+    let isCorrectWeight = value > 80 && value < 300;
     
-    if (typeof(value) !== number) {
-      return new Error('Not a number');
-    } 
+    if (value === undefined) {
+      return new Error('No weight entered');
+    }
+
+    if (isNaN(value)) {
+      return new Error('The `value` prop is not a number.');
+    }
 
     if (!isCorrectWeight) {
       return new Error('Too small or too big');
     // } else if (value >= 300) {
     //   return new Error('Too big');
     }
-
-    if (value === undefined) {
-      return new Error('No weight entered');
-    }
 }
 
 Product.propTypes = {
+  weight: validWeight,
   name: React.PropTypes.string.isRequired,
   producer: React.PropTypes.string,
   hasWatermark: React.PropTypes.bool,
   color: React.PropTypes.oneOf(['white', 'eggshell-white','salmon']).isRequired,
-  weight: (props, propName) => {
-    
-      let value = props[propName];        
-      // check for error
-      let isCorrectWeight = value > 80 && value < 300;
-      
-      if (typeof(value) !== number) {
-        return new Error('Not a number');
-      } 
   
-      if (!isCorrectWeight) {
-        return new Error('Too small or too big');
-      // } else if (value >= 300) {
-      //   return new Error('Too big');
-      }
-  
-      if (value === undefined) {
-        return new Error('No weight entered');
-      }
-  }
 }
 
 module.exports = Product;
