@@ -31,15 +31,20 @@ function createCustomPropType(isRequired) {
       // Put your validation logic here...
       // has to be a number and (has to be greater than 80 or less than 300)
       // if (Number.isInteger(prop) && (prop >= 80 && prop <= 300)) {
-      if ((typeof prop === 'number') && (prop >= 80 && prop <= 300)) {
-      // if ((prop >= 80 && prop <= 300)) {
-      // if (true) {
-        return null
-      }
+      if (typeof prop === 'number') {
+        // separate error generation was the key here looks like.
+        return (prop >= 80 && prop <= 300) ? null : new Error(propName + ' in ' + componentName + " is not within 1 to 10");
+
+        // if (prop >= 80 && prop <= 300) {
+        //   return null
+        // } else {
+        //   return new Error(propName + ' in ' + componentName + " is not within 1 to 10")
+        // }
+    }
       // else if () {
       //   return null
       // }
-      return new Error(propName + ' in ' + componentName + " is not a number or not within range");
+      return new Error(propName + ' in ' + componentName + " is not a number");
     }
   }
 }
