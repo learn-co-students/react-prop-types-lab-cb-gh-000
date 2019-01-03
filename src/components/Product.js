@@ -8,13 +8,13 @@ export default class Product extends React.Component {
   }
 }
 
-function weightChecker(props, propName, componentName) {
-    if (Number.isInteger(props[propName]) && (props[propName] >= 80 && props[propName] <= 300)  ) {
-      return null
-    }
-
-    return new Error(propName + ' in ' + componentName + " is longer than 140 characters");
-}
+// function weightChecker(props, propName, componentName) {
+//     if (Number.isInteger(props[propName]) && (props[propName] >= 80 && props[propName] <= 300)  ) {
+//       return null
+//     }
+//
+//     return new Error(propName + ' in ' + componentName + " is longer than 140 characters");
+// }
 
 function createCustomPropType(isRequired) {
   // The factory returns a custom prop type
@@ -29,18 +29,23 @@ function createCustomPropType(isRequired) {
       // Prop is optional. Do nothing.
     } else {
       // Put your validation logic here...
-      if (Number.isInteger(props[propName])) {
-        return null
-      } else if (props[propName] >= 80 && props[propName] <= 300) {
+      // has to be a number and (has to be greater than 80 or less than 300)
+      // if (Number.isInteger(prop) && (prop >= 80 && prop <= 300)) {
+      if ((typeof prop === 'number') && (prop >= 80 && prop <= 300)) {
+      // if ((prop >= 80 && prop <= 300)) {
+      // if (true) {
         return null
       }
-      return new Error(propName + ' in ' + componentName + " is longer than 140 characters");
+      // else if () {
+      //   return null
+      // }
+      return new Error(propName + ' in ' + componentName + " is not a number or not within range");
     }
   }
 }
 
-const customPropType = createCustomPropType(false);
-customPropType.isRequired = createCustomPropType(true);
+const weightChecker = createCustomPropType(false);
+weightChecker.isRequired = createCustomPropType(true);
 
 Product.defaultProps = {
   hasWatermark: false,
@@ -51,6 +56,5 @@ Product.propTypes = {
   producer: PropTypes.string,
   hasWatermark: PropTypes.bool,
   color: PropTypes.oneOf(['white', 'eggshell-white', 'salmon']).isRequired,
-  // weight: PropTypes.number.isRequired,
-  weight: customPropType.isRequired
+  weight: weightChecker.isRequired
 };
